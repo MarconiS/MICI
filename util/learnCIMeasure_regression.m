@@ -40,20 +40,20 @@ function [measure,initialMeasure, Analysis] = learnCIMeasure_regression(InputBag
 %%
 
 %IF classification problem with 0 and 1 labels, assign each point in negative bag to one bag
-if isempty(setxor([1 0], unique(InputLabels))) 
-    index1 = find(InputLabels==1);
-    Labels(1:size(index1,2)) = 1;
-    Bags_pos = InputBags(index1);
-    index0 = InputLabels==0;
-    Bags_neg = num2cell(cat(1,InputBags{index0}),2);
-    Bags = cat(2,Bags_pos,Bags_neg');
-    Labels(size(index1,2)+1 :size(index1,2)+size(Bags_neg,1)) = 0;
-else
-    Bags = InputBags;
-    Labels = InputLabels;
-end
-
-
+%if isempty(setxor([1 0], unique(InputLabels))) 
+%    index1 = find(InputLabels==1);
+%    Labels(1:size(index1,2)) = 1;
+%    Bags_pos = InputBags(index1);
+%    index0 = InputLabels==0;
+%    Bags_neg = num2cell(cat(1,InputBags{index0}),2);
+%    Bags = cat(2,Bags_pos,Bags_neg');
+%    Labels(size(index1,2)+1 :size(index1,2)+size(Bags_neg,1)) = 0;
+%else
+%    Bags = InputBags;
+%    Labels = InputLabels;
+%end
+Bags = InputBags;
+Labels = InputLabels;
 
 %set up variables
 Analysis = [];
@@ -198,7 +198,7 @@ for iter = 1:Parameters.maxIterations
     subsetIntervalnPop = zeros(Parameters.nPop,2^nSources-2);
     ElemIdxUpdated = zeros(1,Parameters.nPop);
     JumpType = zeros(1,Parameters.nPop);
-    parfor i = 1:Parameters.nPop
+    for i = 1:Parameters.nPop
         [subsetInterval] = evalInterval(measurePop(i,:),nSources,lowerindex,upperindex);
         subsetIntervalnPop(i,:)=subsetInterval;
         %Sample new value
